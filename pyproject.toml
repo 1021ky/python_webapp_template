@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "apppackage"
+name = "python_webapp"
 version = "0.1.0"
 description = ""
 authors = ["k_yamanaka <vaivailx@gmail.com>"]
