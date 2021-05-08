@@ -1,12 +1,20 @@
-# ここはビルド用のコンテナ
+# transform poetry.lock to requirements.lock
+FROM python:3.9-buster as transformer
+
+WORKDIR /tmp
+RUN pip install --upgrade pip && pip install poetry
+COPY pyproject.toml poetry.lock ./
+RUN poetry export -f requirements.txt -o requirements.lock
+
+# build dependencies
 FROM python:3.9-buster as builder
 
-WORKDIR /opt/www
+WORKDIR /tmp
 
-COPY requirements.lock /opt/www
+COPY --from=transformer /tmp/requirements.lock /tmp/
 RUN pip install -r requirements.lock
 
-# ここからは実行用コンテナの準備
+# build runtime container
 FROM python:3.9-slim-buster as runner
 
 COPY --from=builder /usr/local/lib/python3.9/site-packages /usr/local/lib/python3.9/site-packages
