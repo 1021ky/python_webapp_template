@@ -37,10 +37,10 @@ jobs:
           flake8 . --count --show-source --statistics
       - name: Lint with black
         run: |
-          if [ ${{matrix.python-version}} -eq "3.9" ] ; then black . -t py39 --check ; fi
+          black . -t py39 --check
       - name: Lint with isort
         run: |
-          if [ ${{matrix.python-version}} -eq "3.9" ]; isort . --show-files --diff --py 39; fi
+          isort . --show-files --diff --py 39
       - name: compile
         run: |
           python -m compileAll .
