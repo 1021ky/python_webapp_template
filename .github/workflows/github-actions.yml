@@ -16,25 +16,22 @@ jobs:
           ls ${{ github.workspace }}
   test:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [3.9]
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Python ${{ matrix.python-version }}
+      - name: Set up Python 3.9
         uses: actions/setup-python@v2
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: 3.9
       - name: Install package manager
         run: |
           python -m pip install --upgrade pip
           pip install poetry --no-cache-dir --disable-pip-version-check --no-clean
-      - name: activate virtual env
+      - name: transform poetry.lock to requirements.lock
         run: |
-          poetry shell -vvv --ansi
+          poetry export -f requirements.txt -o requirements.lock
       - name: Install dependencies
         run: |
-          poetry install poetry.lock
+          pip install -r requirements.lock
       - name: Lint with flake8
         run: |
           flake8 . --count --show-source --statistics
