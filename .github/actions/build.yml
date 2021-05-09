@@ -1,6 +1,0 @@
-name: build
-description: build
-runs:
-  using: "composite"
-  steps:
-    - run: echo "build🎉"
