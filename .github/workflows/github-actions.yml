@@ -28,7 +28,7 @@ jobs:
           pip install poetry --no-cache-dir --disable-pip-version-check --no-clean
       - name: transform poetry.lock to requirements.lock
         run: |
-          poetry export -f requirements.txt -o requirements.lock
+          poetry export --dev -f requirements.txt -o requirements.lock
       - name: Install dependencies
         run: |
           pip install -r requirements.lock
