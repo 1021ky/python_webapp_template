@@ -31,7 +31,7 @@ jobs:
           pip install poetry --no-cache-dir --disable-pip-version-check --no-clean
       - name: activate virtual env
         run: |
-          poetry shell -vvv
+          poetry shell -vvv --ansi
       - name: Install dependencies
         run: |
           poetry install poetry.lock
