@@ -43,7 +43,7 @@ jobs:
           isort . --show-files --diff --py 39
       - name: compile
         run: |
-          python -m compileAll .
+          python -m compileall .
       - name: Test with pytest
         run: |
           pytest
