@@ -4,62 +4,30 @@ jobs:
   output_summary:
     runs-on: ubuntu-latest
     steps:
-      - name: echo summary
-        run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
       - name: Check out repository code
         uses: actions/checkout@v2
-      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
-      - name: List files in the repository
-        run: |
-          ls ${{ github.workspace }}
+      - uses: ./.github/actions/info
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: checkout
+        uses: actions/checkout@v2
       - name: Set up Python 3.9
         uses: actions/setup-python@v2
         with:
           python-version: 3.9
-      - name: Install package manager
-        run: |
-          python -m pip install --upgrade pip
-          pip install poetry --no-cache-dir --disable-pip-version-check --no-clean
-      - name: transform poetry.lock to requirements.lock
-        run: |
-          poetry export --dev -f requirements.txt -o requirements.lock
-      - name: Install dependencies
-        run: |
-          pip install -r requirements.lock
-      - name: Lint with flake8
-        run: |
-          flake8 . --count --show-source --statistics
-      - name: Lint with black
-        run: |
-          black . -t py39 --check
-      - name: Lint with isort
-        run: |
-          isort . --show-files --diff --py 39
-      - name: compile
-        run: |
-          python -m compileall .
-      - name: Test with pytest
-        run: |
-          pytest
+      - uses: ./.github/actions/test
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python-version }}
+      - name: checkout
+        uses: actions/checkout@v2
+      - uses: ./.github/actions/build
+    if: ${{ success() }}
+    needs: test
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python-version }}
+      - uses: ./.github/actions/deploy
+    if: ${{ success() }}
+    needs: build

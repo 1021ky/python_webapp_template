@@ -1,0 +1,30 @@
+name: test application
+description: lint application source code and run test
+runs:
+  using: "composite"
+  steps:
+    - name: Install package manager
+      run: |
+        python -m pip install --upgrade pip
+        pip install poetry --no-cache-dir --disable-pip-version-check --no-clean
+    - name: transform poetry.lock to requirements.lock
+      run: |
+        poetry export --dev -f requirements.txt -o requirements.lock
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.lock
+    - name: Lint with flake8
+      run: |
+        flake8 . --count --show-source --statistics
+    - name: Lint with black
+      run: |
+        black . -t py39 --check
+    - name: Lint with isort
+      run: |
+        isort . --show-files --diff --py 39
+    - name: compile
+      run: |
+        python -m compileall .
+    - name: Test with pytest
+      run: |
+        pytest
