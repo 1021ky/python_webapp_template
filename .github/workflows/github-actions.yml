@@ -34,7 +34,7 @@ jobs:
           poetry shell -vvv
       - name: Install dependencies
         run: |
-          poetry install poetry.lock -vvv --ansi
+          poetry install poetry.lock
       - name: Lint with flake8
         run: |
           flake8 . --count --show-source --statistics
