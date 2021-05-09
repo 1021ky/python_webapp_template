@@ -31,7 +31,7 @@ jobs:
           pip install poetry --no-cache-dir --disable-pip-version-check --no-clean
       - name: Install dependencies
         run: |
-          poetry install poetry.lock
+          poetry install poetry.lock -vvv
       - name: Lint with flake8
         run: |
           flake8 . --count --show-source --statistics
