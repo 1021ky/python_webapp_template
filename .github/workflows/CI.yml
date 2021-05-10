@@ -1,0 +1,20 @@
+name: GitHub Actions for CI
+on:
+  push:
+jobs:
+  output_summary:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - uses: ./.github/actions/info
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - uses: ./.github/actions/test

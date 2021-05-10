@@ -1,5 +1,11 @@
-name: GitHub Actions for CI/CD
-on: [push]
+name: GitHub Actions for CD
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 jobs:
   output_summary:
     runs-on: ubuntu-latest
