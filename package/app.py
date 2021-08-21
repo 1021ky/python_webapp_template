@@ -1,11 +1,10 @@
+import json
+from logging import config, getLogger
+
 from flask import Flask
 
 app = Flask(__name__)
 
-from logging import getLogger, config
-
-
-import json
 
 with open("log_config.json", "r") as f:
     log_conf = json.load(f)
